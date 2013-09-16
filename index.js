@@ -42,13 +42,15 @@ Rescuer.prototype.rescue = function(position) {
 
   console.log("It's true! teleporting to : "+JSON.stringify(this.opts.startingPosition || this.game.startingPosition));
   // Default to starting position for rescue point
-  this.game.controls._target.position.x = this.opts.startingPosition[0] || this.game.startingPosition[0];
-  this.game.controls._target.position.y = this.opts.startingPosition[1] || this.game.startingPosition[1];
-  this.game.controls._target.position.z = this.opts.startingPosition[2] || this.game.startingPosition[2];
+  var target = this.game.controls.target();
+  var respawnLocation = this.opts.startingPosition || this.game.startingPosition;
+  target.position.x = respawnLocation[0];
+  target.position.y = respawnLocation[1];
+  target.position.z = respawnLocation[2];
  
   // this.game.emit('tick', delta)
 
   var playerPos = this.game.playerPosition()
-  this.game.spatial.emit('position', playerPos, playerPos)
+  this.game.spatial.emit('position', respawnLocation, respawnLocation)
 
 }

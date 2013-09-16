@@ -22,7 +22,7 @@ options can be:
 ```javascript
 {
   frequency:  // how often in milliseconds to check player position, default is 500.
-  position:   // where to teleport the player when they enter the danger zone, default is game.startingPosition.
+  startingPosition:   // where to teleport the player when they enter the danger zone, default is game.startingPosition.
   teleport:   // if false, do not teleport the player automatically, only emit a 'rescue' event. default is true.
   dangerZone: // area to rescue the player from. default is:
   {
