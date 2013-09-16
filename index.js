@@ -26,7 +26,7 @@ inherits(Rescuer, events.EventEmitter)
 
 Rescuer.prototype.checkPosition = function() {
   var dangerZone = this.opts.dangerZone || DEFAULT_DANGER_ZONE
-  var currentPos = this.game.controls.yawObject.position
+  var currentPos = this.game.controls._target.position
 
   if(currentPos.x < dangerZone.upper.x &&
      currentPos.y < dangerZone.upper.y &&
@@ -39,11 +39,11 @@ Rescuer.prototype.checkPosition = function() {
 }
 
 Rescuer.prototype.rescue = function(position) {
-  if(this.opts.teleport !== false) {
-    // Default to starting position for rescue point
-    game.controls._target.position.x = this.opts.position[0] || this.game.startingPosition[0];
-    game.controls._target.position.y = this.opts.position[1] || this.game.startingPosition[1];
-    game.controls._target.position.z = this.opts.position[2] || this.game.startingPosition[2];
-  }
-  this.emit('rescue', position)
+
+  console.log("It's true! teleporting to : "+JSON.stringify(this.opts.startingPosition || this.game.startingPosition));
+  // Default to starting position for rescue point
+  this.game.controls._target.position.x = this.opts.startingPosition[0] || this.game.startingPosition[0];
+  this.game.controls._target.position.y = this.opts.startingPosition[1] || this.game.startingPosition[1];
+  this.game.controls._target.position.z = this.opts.startingPosition[2] || this.game.startingPosition[2];
+  
 }
