@@ -45,5 +45,10 @@ Rescuer.prototype.rescue = function(position) {
   this.game.controls._target.position.x = this.opts.startingPosition[0] || this.game.startingPosition[0];
   this.game.controls._target.position.y = this.opts.startingPosition[1] || this.game.startingPosition[1];
   this.game.controls._target.position.z = this.opts.startingPosition[2] || this.game.startingPosition[2];
-  
+ 
+  // this.game.emit('tick', delta)
+
+  var playerPos = this.game.playerPosition()
+  this.game.spatial.emit('position', playerPos, playerPos)
+
 }
