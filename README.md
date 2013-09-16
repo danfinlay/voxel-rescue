@@ -25,6 +25,8 @@ options can be:
   startingPosition:   // where to teleport the player when they enter the danger zone, default is game.startingPosition.
   teleport:   // if false, do not teleport the player automatically, only emit a 'rescue' event. default is true.
   dangerZone: // area to rescue the player from. default is:
+  groundMinimum: //When rush loading ground under spawn point, the deepest Y coordinate to be force loaded.  Default -20
+  fudgeFactor: //When rush loading ground under spawn point, the number of blocks around their x,y coordinate to load. Default 5.
   {
     lower: {x: -Infinity, y: -Infinity, z: -Infinity},
     upper: {x: Infinity, y: -100, z: Infinity}

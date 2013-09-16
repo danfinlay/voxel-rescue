@@ -29,8 +29,9 @@ function Rescuer(game, opts) {
   //to avoid infinite falling.
   //Features a fudge factor to maybe play with.
   //It's how many blocks in the x/z dimensions to also load, to account for horizontal drift.
-  var fudgeFactor = 5;
-  this.rescueBB = aabb([position[0]+fudgeFactor, position[1]+fudgeFactor, position[2]+fudgeFactor], [position[0]-fudgeFactor, position[1]-200, position[2]-fudgeFactor])
+  var fudgeFactor = opts.fudgeFactor || 5;
+  var groundMinimum = opts.groundMinimum || -20;
+  this.rescueBB = aabb([position[0]+fudgeFactor, position[1]+fudgeFactor, position[2]+fudgeFactor], groundMinimum, position[2]-fudgeFactor])
 }
 
 inherits(Rescuer, events.EventEmitter)
