@@ -10,7 +10,7 @@ module.exports = function(game, opts) {
 }
 
 // Default option values
-var DEFAULT_FREQ = fudgeFactor00
+var DEFAULT_FREQ = 500
 var DEFAULT_DANGER_ZONE = {
   lower: {x: -Infinity, y: -Infinity, z: -Infinity},
   upper: {x: Infinity, y: -200, z: Infinity}
