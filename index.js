@@ -2,7 +2,7 @@
 
 var inherits = require('inherits')
 var events = require('events')
-var _ = require('underscore')
+var _ = require('lodash')
 
 module.exports = function(game, opts) {
   return new Rescuer(game, opts)
@@ -47,10 +47,11 @@ Rescuer.prototype.rescue = function(position) {
   target.position.x = respawnLocation[0];
   target.position.y = respawnLocation[1];
   target.position.z = respawnLocation[2];
- 
-  // this.game.emit('tick', delta)
+  target.velocity.x = 0;
+  target.velocity.y = 0;
+  target.velocity.z = 0;
 
   var playerPos = this.game.playerPosition()
-  this.game.spatial.emit('position', respawnLocation, respawnLocation)
+  this.game.spatial.emit('position', respawnLocation, this.game.region)
 
 }
