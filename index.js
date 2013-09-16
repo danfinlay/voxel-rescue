@@ -3,13 +3,14 @@
 var inherits = require('inherits')
 var events = require('events')
 var _ = require('lodash')
+var aabb = require('aabb-3d')
 
 module.exports = function(game, opts) {
   return new Rescuer(game, opts)
 }
 
 // Default option values
-var DEFAULT_FREQ = 500
+var DEFAULT_FREQ = fudgeFactor00
 var DEFAULT_DANGER_ZONE = {
   lower: {x: -Infinity, y: -Infinity, z: -Infinity},
   upper: {x: Infinity, y: -200, z: Infinity}
@@ -20,6 +21,15 @@ function Rescuer(game, opts) {
   this.opts = opts
   this.game = game
   this.game.on('tick', _.throttle(this.checkPosition.bind(this), this.opts.frequency || DEFAULT_FREQ))
+
+  var position = this.opts.startingPosition || this.game.startingPosition
+  this.position = position
+
+  //This rescue BB hurriedly loads the blocks below the player's spawn location
+  //to avoid infinite falling.
+  //Features a fudge factor to maybe play with.
+  var fudgeFactor = 5;
+  this.rescueBB = aabb([position[0]+fudgeFactor, position[1]+fudgeFactor, position[2]+fudgeFactor], [position[0]-fudgeFactor, position[1]-200, position[2]-fudgeFactor])
 }
 
 inherits(Rescuer, events.EventEmitter)
@@ -43,15 +53,13 @@ Rescuer.prototype.rescue = function(position) {
   console.log("It's true! teleporting to : "+JSON.stringify(this.opts.startingPosition || this.game.startingPosition));
   // Default to starting position for rescue point
   var target = this.game.controls.target();
-  var respawnLocation = this.opts.startingPosition || this.game.startingPosition;
-  target.position.x = respawnLocation[0];
-  target.position.y = respawnLocation[1];
-  target.position.z = respawnLocation[2];
+  target.position.x = this.position[0];
+  target.position.y = this.position[1];
+  target.position.z = this.position[2];
   target.velocity.x = 0;
   target.velocity.y = 0;
   target.velocity.z = 0;
 
-  var playerPos = this.game.playerPosition()
-  this.game.spatial.emit('position', respawnLocation, this.game.region)
+  this.game.spatial.emit('Respawning', this.rescueBB)
 
 }

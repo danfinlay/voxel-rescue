@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "inherits": "1.0.0",
-    "aabb": "0.0.1",
-    "lodash": "~2.0.0"
+    "lodash": "~2.0.0",
+    "aabb-3d": "0.0.0"
   },
   "devDependencies": {
     "voxel-engine": "0.3.6",
