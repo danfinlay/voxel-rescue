@@ -28,6 +28,7 @@ function Rescuer(game, opts) {
   //This rescue BB hurriedly loads the blocks below the player's spawn location
   //to avoid infinite falling.
   //Features a fudge factor to maybe play with.
+  //It's how many blocks in the x/z dimensions to also load, to account for horizontal drift.
   var fudgeFactor = 5;
   this.rescueBB = aabb([position[0]+fudgeFactor, position[1]+fudgeFactor, position[2]+fudgeFactor], [position[0]-fudgeFactor, position[1]-200, position[2]-fudgeFactor])
 }
@@ -61,5 +62,6 @@ Rescuer.prototype.rescue = function(position) {
   target.velocity.z = 0;
 
   this.game.spatial.emit('Respawning', this.rescueBB)
+  this.game.spatial.emit('Reloading level', aabb([Infinity, Infinity, Infinity], [-Infinity, -Infinity, -Infinity]))
 
 }
