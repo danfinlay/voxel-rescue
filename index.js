@@ -27,7 +27,7 @@ inherits(Rescuer, events.EventEmitter)
 
 Rescuer.prototype.checkPosition = function() {
   var dangerZone = this.opts.dangerZone || DEFAULT_DANGER_ZONE
-  var currentPos = this.object.yaw.position
+  var currentPos = game.controls._target.avatar.position
 
   if (currentPos.x < dangerZone.upper.x)
   if (currentPos.y < dangerZone.upper.y)
