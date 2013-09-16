@@ -4,8 +4,8 @@ var inherits = require('inherits')
 var events = require('events')
 var _ = require('underscore')
 
-module.exports = function(game, object, opts) {
-  return new Rescuer(game, object, opts)
+module.exports = function(game, opts) {
+  return new Rescuer(game, opts)
 }
 
 // Default option values
@@ -15,11 +15,10 @@ var DEFAULT_DANGER_ZONE = {
   upper: {x: Infinity, y: -200, z: Infinity}
 }
 
-function Rescuer(game, object, opts) {
+function Rescuer(game, opts) {
   if (!opts) opts = {}
   this.opts = opts
   this.game = game
-  this.object = object
   this.game.on('tick', _.throttle(this.checkPosition.bind(this), this.opts.frequency || DEFAULT_FREQ))
 }
 
@@ -27,14 +26,14 @@ inherits(Rescuer, events.EventEmitter)
 
 Rescuer.prototype.checkPosition = function() {
   var dangerZone = this.opts.dangerZone || DEFAULT_DANGER_ZONE
-  var currentPos = game.controls._target.avatar.position
+  var currentPos = this.game.controls.yawObject.position
 
-  if (currentPos.x < dangerZone.upper.x)
-  if (currentPos.y < dangerZone.upper.y)
-  if (currentPos.z < dangerZone.upper.z)
-  if (currentPos.x > dangerZone.lower.x)
-  if (currentPos.y > dangerZone.lower.y)
-  if (currentPos.z > dangerZone.lower.z) {
+  if(currentPos.x < dangerZone.upper.x &&
+     currentPos.y < dangerZone.upper.y &&
+     currentPos.z < dangerZone.upper.z &&
+     currentPos.x > dangerZone.lower.x &&
+     currentPos.y > dangerZone.lower.y &&
+     currentPos.z > dangerZone.lower.z) {
     this.rescue(currentPos.clone())
   }
 }
@@ -42,7 +41,9 @@ Rescuer.prototype.checkPosition = function() {
 Rescuer.prototype.rescue = function(position) {
   if(this.opts.teleport !== false) {
     // Default to starting position for rescue point
-    this.object.yaw.position.copy(this.opts.position || this.game.startingPosition)
+    game.controls._target.position.x = this.opts.position[0] || this.game.startingPosition[0];
+    game.controls._target.position.y = this.opts.position[1] || this.game.startingPosition[1];
+    game.controls._target.position.z = this.opts.position[2] || this.game.startingPosition[2];
   }
   this.emit('rescue', position)
 }
